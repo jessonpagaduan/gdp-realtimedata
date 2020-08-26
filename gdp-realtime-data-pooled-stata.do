@@ -1,6 +1,7 @@
-use gdp-realtime-data-pooled-stata.dta
+use pooled-stata.dta
 
-foreach var of varlist dfq4_pooled dfq1_pooled {
+/*
+foreach var of varlist dfq4 dfq1 {
 reg `var' str_q1q2, r
 estimates store `var'_str
 reg `var' mob_q1q2 , r
@@ -18,4 +19,23 @@ estimates store `var'_str_mob_lncc
 }
 */
 
-outreg2 [*] using gdp-realtimedata-pooled-results, excel replace
+
+foreach var of varlist dfq4 dfq1 {
+reg `var' str_q1q2, r
+estimates store `var'_str
+reg `var' workmob_q1q2 , r
+estimates store `var'_workmob
+reg `var' lncc_q1q2, r
+estimates store `var'_lncc
+reg `var' str_q1q2 workmob_q1q2, r
+estimates store `var'_str_workmob
+reg `var' str_q1q2 lncc_q1q2, r
+estimates store `var'_str_lncc
+reg `var' workmob_q1q2 lncc_q1q2, r
+estimates store `var'_workmob_lncc
+reg `var' str_q1q2 workmob_q1q2 lncc_q1q2, r
+estimates store `var'_str_workmob_lncc
+}
+
+
+outreg2 [*] using pooled-results-workmob, excel replace
